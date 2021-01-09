@@ -18,14 +18,13 @@ export class GupiaoSevice {
   }
 
   async getHtml() {
-    this.logger.debug('股票开始');
+    this.logger.debug('获取股票信息开始');
     const url = 'http://quotes.money.163.com/f10/zycwzb_600519.html#01c01';
     const res = await axios.get(url, {
       headers: {
         'User-Agent': this.ua,
       },
     });
-    this.logger.debug('股票结束');
     const $ = cheerio.load(res.data);
     const title = $('title').text();
     this.logger.log(`您设定的股票为：${title}`);
@@ -60,6 +59,9 @@ export class GupiaoSevice {
 
     dataList.shift();
     const excel = await this.excelService.exportExcel(titleList, dataList);
+    const isExist = fs.existsSync(excelPath);
+    if (isExist) fs.unlinkSync(excelPath);
     fs.writeFileSync(excelPath, excel);
+    this.logger.debug('获取股票信息结束结束' + excelPath);
   }
 }
