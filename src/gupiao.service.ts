@@ -59,7 +59,7 @@ export class GupiaoSevice {
     });
 
     dataList.shift();
-    const exle = await this.excelService.exportExcel(titleList, dataList);
-    fs.writeFileSync(excelPath, exle);
+    const excel = await this.excelService.exportExcel(titleList, dataList);
+    fs.writeFileSync(excelPath, excel);
   }
 }
