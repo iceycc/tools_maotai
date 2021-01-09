@@ -6,7 +6,7 @@ import * as moment from 'moment';
 
 import 'dotenv/config';
 import { LoginService } from './login.service';
-import { AppService } from './app.service';
+import { RushInJdService } from './rushInJd.service';
 
 const env = process.env;
 
@@ -20,7 +20,7 @@ export class TasksService {
   constructor(
     private schedulerRegistry: SchedulerRegistry,
     private readonly loginService: LoginService,
-    private readonly appSrv: AppService,
+    private readonly appSrv: RushInJdService,
   ) {
     // this.handleTimeDiff();
   }

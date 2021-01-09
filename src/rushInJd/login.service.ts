@@ -1,12 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
 import 'dotenv/config';
-import { defaultUa } from './ua';
+import { defaultUa } from '../ua';
 import * as fs from 'fs';
-import { randomRange } from './utils';
-// import * as shell from 'shelljs';
+import { randomRange } from '../utils';
+import * as shell from 'shelljs';
 import * as path from 'path';
-import * as qrcode from 'qrcode-terminal';
+// import * as qrcode from 'qrcode-terminal';
 
 const cookiePath = path.resolve(__dirname, '../', 'maotai.cookie');
 const qrcodePath = path.resolve(__dirname, '../', 'qrcode.png');
@@ -177,10 +177,10 @@ export class LoginService {
   }
 
   async openQrcode() {
-    // shell.exec(`open ${qrcodePath}`);
-    qrcode.generate(`open ${qrcodePath}`, {
-      small: true,
-    });
+    shell.exec(`open ${qrcodePath}`);
+    // qrcode.generate(`open ${qrcodePath}`, {
+    //   small: true,
+    // });
     return;
   }
 

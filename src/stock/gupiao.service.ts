@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
-import { defaultUa } from './ua';
+import { defaultUa } from '../ua';
 import * as cheerio from 'cheerio';
-import { ExportExcelService } from './export-excel.service';
+import { ExportExcelService } from '../excel/export-excel.service';
 import * as fs from 'fs';
 import * as Path from 'path';
 

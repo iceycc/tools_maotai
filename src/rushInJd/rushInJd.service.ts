@@ -3,8 +3,8 @@ import { LoginService } from './login.service';
 import { ProductService } from './product.service';
 
 @Injectable()
-export class AppService {
-  private readonly logger = new Logger(AppService.name);
+export class RushInJdService {
+  private readonly logger = new Logger(RushInJdService.name);
   constructor(
     private readonly loginService: LoginService,
     private readonly productService: ProductService,

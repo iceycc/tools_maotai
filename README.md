@@ -72,5 +72,8 @@ yarn start
 
 
 ### 2.4 update : 更新获取茅台股价信息
-- 
+- 可以将茅台股票导出成excel
+```js
+import { StockModule } from './stock/stock.module'; // 获取股票信息模块
+```
 

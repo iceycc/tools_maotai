@@ -3,7 +3,7 @@ import 'dotenv/config';
 import { LoginService } from './login.service';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import { randomRange } from './utils';
+import { randomRange } from '../utils';
 
 const productId = process.env.PRODUCTID;
 const byNum = process.env.BYNUM;
