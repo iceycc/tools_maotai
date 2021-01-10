@@ -22,7 +22,7 @@ export class TasksService {
     private readonly loginService: LoginService,
     private readonly appSrv: RushInJdService,
   ) {
-    // this.handleTimeDiff();
+    this.handleTimeDiff();
   }
 
   /**
