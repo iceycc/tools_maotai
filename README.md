@@ -5,8 +5,7 @@
 ## 2.使用说明
 ### 2.1 下载安装
 ```js
-git clone https://gitee.com/zhufengpeixun/jd.git
-cd jd
+git clone xx.git
 yarn install
 ```
 
