@@ -18,11 +18,11 @@ export class TaskService {
     this.initVote();
   }
 
-  // @Cron('* */30 * * * *')
-  // job() {
-  //   this.logger.debug(`${moment().format('YYYY年MM月DD日  HH时mm分ss秒')}`);
-  //   this.initVote().then(r => console.log(r));
-  // }
+  @Cron('* */30 * * * *')
+  job() {
+    this.logger.debug(`${moment().format('YYYY年MM月DD日  HH时mm分ss秒')}`);
+    this.initVote().then(r => console.log(r));
+  }
 
 
   async initVote() {
