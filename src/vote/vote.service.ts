@@ -38,7 +38,7 @@ export class VoteService {
       'eng',
       {
         logger: m => {
-          console.log(m);
+          // console.log(m);
         },
       },
     );
