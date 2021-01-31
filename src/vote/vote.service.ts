@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as request from 'request';
@@ -8,6 +8,7 @@ const voteCodePath = path.resolve(__dirname, '../../', 'temp');
 
 @Injectable()
 export class VoteService {
+  private readonly logger = new Logger(VoteService.name);
   private cookie = null;
 
   async getCookie() {
@@ -37,11 +38,12 @@ export class VoteService {
       'eng',
       {
         logger: m => {
-          // console.log(m);
+          console.log(m);
         },
       },
     );
-    console.log(text);
+    console.log('Tesseract识别的原始图形码', text);
+    this.logger.warn('Tesseract识别的原始图形码: ' + text);
     const codes = getIntArr(text);
     if (codes.length > 0) {
       const code = codes.join();
@@ -77,7 +79,11 @@ export class VoteService {
         url: `http://vote.changkeweb.cn/api/vote/vote.php`,
         headers: {
           // Cookie: this.cookie,
-          'Cookie': 'UM_distinctid=177560a8aa499-084fe6b3915731-1414206e-4c900-177560a8aa5305;czt_openinfo=%257B%2522uid%2522%253A%252275214616%2522%252C%2522token%2522%253A%2522147ba1cdad3260cdfb75827d80f783eb%2522%257D;acw_tc=707c9f9616120719273108518e6181bd3a82e611c01140910fc8fd0ecab1c0',
+          'Cookie': [
+            'UM_distinctid=177560a8aa499-084fe6b3915731-1414206e-4c900-177560a8aa5305',
+            'czt_openinfo=%257B%2522uid%2522%253A%252275214616%2522%252C%2522token%2522%253A%2522147ba1cdad3260cdfb75827d80f783eb%2522%257D',
+            // 'acw_tc=707c9f9616120719273108518e6181bd3a82e611c01140910fc8fd0ecab1c0',
+          ].concat(this.cookie),
           Accept: '*/*',
           'Accept-Encoding': 'utf-8',
           'Accept-Language': 'zh-CN,zh;q=0.8',
@@ -92,7 +98,6 @@ export class VoteService {
             response 响应信息的集合
           */
         // response.cookie = this.cookie;
-        console.log('----', err, body);
         if (!err && response.statusCode == 200) {
           resolve(body);
         } else {
@@ -127,11 +132,9 @@ export class VoteService {
     const stream = fs.createWriteStream(filepath);
     return new Promise<any>((resolve, reject) => {
       request(options, (error, response) => {
-        console.log(response.headers['set-cookie']);
         this.cookie = response.headers['set-cookie'] || [];
       }).pipe(stream).on('close', (err) => {
         if (err) reject(err);
-        console.log(this.cookie);
         resolve(filepath);
       });
     });
@@ -142,6 +145,7 @@ export class VoteService {
   checkCode({ rnd, itemid, captcha }) {
     return new Promise<any>((resolve, reject) => {
       request({
+        // url: 'http://api.changkeweb.cn/yuntou/mobile/wx_get_signature.php?url=http%3A%2F%2Fm.changkeweb.cn%2Factivity%3Fsid%3D808032fc0a989f23%26cfrom%3DUP2CW%23fc',
         url: `http://vote.changkeweb.cn/api/vote/captcha.check.php?rnd=${rnd}&itemid=${itemid}&authType=4&captcha=${captcha}`,
         headers: {
           Accept: '*/*',
@@ -155,7 +159,7 @@ export class VoteService {
         /*
             response 响应信息的集合
           */
-        console.log('checkCode', err, body);
+
         if (!err && response.statusCode == 200) {
           resolve(body);
         } else {
@@ -177,7 +181,6 @@ async function writePicByBs64(imgData, layout_id) {
 
 
   //过滤data:URL
-  console.log(typeof imgData);
   const base64Data = imgData.replace(/^data:image\/\w+;base64,/, '');
   const dataBuffer = Buffer.from(base64Data, 'base64');
 
@@ -191,6 +194,5 @@ async function writePicByBs64(imgData, layout_id) {
   extname = '.' + (filterResult[0] || 'png');
   // 写入图片
   const filepath = `${voteCodePath}/${layout_id}${extname}`;
-  console.log(filepath);
   await fs.writeFileSync(filepath, dataBuffer);
 }
