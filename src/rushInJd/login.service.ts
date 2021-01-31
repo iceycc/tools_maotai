@@ -10,8 +10,6 @@ import * as path from 'path';
 
 const cookiePath = path.resolve(__dirname, '../', 'maotai.cookie');
 const qrcodePath = path.resolve(__dirname, '../', 'qrcode.png');
-console.log(__dirname);
-console.log(qrcodePath);
 
 interface CookieData {
   cookie: string[];
