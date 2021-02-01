@@ -42,7 +42,6 @@ export class VoteService {
         },
       },
     );
-    console.log('Tesseract识别的原始图形码', text);
     this.logger.warn('Tesseract识别的原始图形码: ' + text);
     const codes = getIntArr(text);
     if (codes.length > 0) {

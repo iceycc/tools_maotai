@@ -3,9 +3,9 @@ import { Cron, SchedulerRegistry } from '@nestjs/schedule';
 import { VoteService } from './vote.service';
 import * as path from 'path';
 import * as moment from 'moment';
-
+import * as fs from 'fs'
 const voteCodePath = path.resolve(__dirname, '../../', 'temp');
-
+const engTraineddata = path.resolve(__dirname, '../../', 'eng.traineddata')
 @Injectable()
 export class TaskService {
   private readonly logger = new Logger(TaskService.name);
@@ -15,12 +15,15 @@ export class TaskService {
     private schedulerRegistry: SchedulerRegistry,
     private readonly voteService: VoteService,
   ) {
+
+    if(fs.existsSync(engTraineddata)) fs.unlinkSync(engTraineddata)
     this.initVote();
   }
 
   @Cron('* */30 7-24 * * *')
   job() {
     this.logger.debug(`${moment().format('YYYY年MM月DD日  HH时mm分ss秒')}`);
+    if(fs.existsSync(engTraineddata)) fs.unlinkSync(engTraineddata)
     this.initVote().then(r => console.log(r));
   }
 
