@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Cron, SchedulerRegistry } from '@nestjs/schedule';
+import { Cron, Interval, SchedulerRegistry } from '@nestjs/schedule';
 import { VoteService } from './vote.service';
 import * as path from 'path';
 import * as moment from 'moment';
@@ -16,14 +16,20 @@ export class TaskService {
     private readonly voteService: VoteService,
   ) {
 
-    if(fs.existsSync(engTraineddata)) fs.unlinkSync(engTraineddata)
+    // if(fs.existsSync(engTraineddata)) fs.unlinkSync(engTraineddata)
     this.initVote();
   }
 
-  @Cron('* */30 7-24 * * *')
+  // @Cron('* 1/30 * * * *')
+  // Job1(){
+  //   this.logger.debug(`${moment().format('YYYY年MM月DD日  HH时mm分ss秒')}`);
+  // }
+
+
+  @Interval(20 * 60 * 100)
   job() {
     this.logger.debug(`${moment().format('YYYY年MM月DD日  HH时mm分ss秒')}`);
-    if(fs.existsSync(engTraineddata)) fs.unlinkSync(engTraineddata)
+    // if(fs.existsSync(engTraineddata)) fs.unlinkSync(engTraineddata)
     this.initVote().then(r => console.log(r));
   }
 
